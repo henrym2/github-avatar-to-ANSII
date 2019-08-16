@@ -5,6 +5,8 @@ from PIL import Image
 import requests
 import urllib.request
 import os
+import urwid
+
 
 @click.group()
 def main():
@@ -15,7 +17,13 @@ def main():
 def getuser(username):
     response = requests.get('https://api.github.com/users/' + username)
     if response:
-        displayUserData(response)
+        userImage = displayUserData(response)
+        urwid.set_encoding('UTF-8')
+        profilePic = urwid.Text(userImage)
+        left = urwid.Filler(profilePic, 'middle')
+        printLoop = urwid.MainLoop(left, screen=urwid.raw_display.Screen())
+    #    printLoop.run()
+
         os.remove("tmp.jpg")
     else:
         click.echo('Failure')
@@ -41,21 +49,25 @@ def displayUserImage(img_path):
     h = 25
     w = 35
 
+    text = ""
+
     img = img.resize((w,h), Image.ANTIALIAS)
     img_arr = np.asarray(img)
     h,w,c = img_arr.shape
     for x in range(h):
-        print()
+        text += '\n'
         for y in range(w):
-	        pix = img_arr[x][y]
-	        print(getColor(pix[0], pix[1], pix[2]), sep='', end='')
+            pix = img_arr[x][y]
+            text += getColor(pix[0], pix[1], pix[2])
+    print(text)
+    return text
     
     
 
 def displayUserData(response):
     userData = response.json()
     urllib.request.urlretrieve(userData['avatar_url'], 'tmp.jpg')
-    displayUserImage('tmp.jpg')
+    return displayUserImage('tmp.jpg')
 
 if __name__ == '__main__':
     main()
