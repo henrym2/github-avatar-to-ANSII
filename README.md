@@ -5,6 +5,10 @@
 
 Python script for rendering a github users avatar in Terminal (requires ANSII color support)
 
-This script does require the 'click' library to function.
+To install requirements run:
+
+`$ pip install -r requirements.txt --user`
+
+A virtual enviroment in either env, pipenv or virtualenv is recommended
 
 Simply clone the repo and enter the following `python render-user.py getuser [USERNAME]` to have that users avatar rendered right in your terminal!
