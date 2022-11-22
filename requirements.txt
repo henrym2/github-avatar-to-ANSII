@@ -1,5 +1,5 @@
 Click==7.0
 numpy==1.17.2
-Pillow==6.2.0
+Pillow==9.3.0
 requests==2.22.0
 urwid==2.0.1
